@@ -72,3 +72,28 @@ class categoriesEx{
     }
   }
 }
+
+class categoriesIn{
+    private $pdo;
+    private $nom;
+    private $user_id;
+    public function __construct($pdo){
+        $this->pdo=$pdo;
+    }
+  
+  public function create($nom,$user_id){
+    $stmt = $this->pdo->prepare("INSERT INTO categoriesIn(nom,user_id)VALUES (?,?)");
+    $stmt->execute([$nom,$user_id]);
+  }
+
+  public function select($user_id){
+    try{
+        $stmt=$this->pdo->prepare("SELECT * FROM categoriesIn WHERE user_id=?");
+        $stmt->execute([$user_id]);
+        $user=$stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $user;
+    }catch(PDOExepcetion $e){
+        echo 'erreur'.$e->getMessage();
+    }
+  }
+}
