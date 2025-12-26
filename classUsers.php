@@ -97,3 +97,47 @@ class categoriesIn{
     }
   }
 }
+class expenses{
+        private $pdo;
+        private $id;
+        private $MontantEx;
+        private $descreptionEx;
+        private $dateEx;
+        private $categories_id;
+        private $user_id;
+
+        public function __construct($pdo){
+           $this->pdo=$pdo;
+        }
+
+        public function createEx($MontantEx,$descreptionEx,$dateEx,$categories_id,$user_id){
+          $stmt=$this->pdo->prepare("INSERT INTO expenses(montantEx,descriptionEx,dateEx,category_id,user_id)VALUES(?,?,?,?,?)");
+          $stmt->execute([$MontantEx,$descreptionEx,$dateEx,$categories_id,$user_id]);
+        } 
+        public function updateEx($id, $MontantEx, $descriptionEx, $dateEx){
+            $stmt = $this->pdo->prepare("UPDATE expenses SET montantEx = ?, descriptionEx = ?, dateEx = ? WHERE id = ?");
+            $stmt->execute([$MontantEx, $descriptionEx, $dateEx, $id]);
+        }
+        public function deleteEx($id){
+            $stmt=$this->pdo->prepare("DELETE FROM expenses WHERE id=?");
+            $stmt->execute([$id]);
+            header('Location: dashbord.php');
+            exit;
+        }
+        public function getTotalExpenses($user_id){
+        $stmt = $this->pdo->prepare("SELECT SUM(montantEx) as total FROM expenses WHERE user_id=?");
+        $stmt->execute([$user_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total'] ?? 0;
+        }
+        public function affichageEx($user_id){
+            $stmt=$this->pdo->prepare("SELECT * FROM expenses  WHERE user_id=?");
+            $stmt->execute([$user_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function affichageExMD($id){
+            $stmt=$this->pdo->prepare("SELECT * FROM expenses  WHERE id=?");
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+}
