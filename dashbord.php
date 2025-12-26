@@ -11,6 +11,7 @@ $rowEx=$afficahgeExObj->affichageEx($user_id);
 
 $afficahgeExObj=new incomes ($pdo);
 $rowIn=$afficahgeExObj->affichageIn($user_id);
+
 ?>
 
 
@@ -64,11 +65,12 @@ $rowIn=$afficahgeExObj->affichageIn($user_id);
       </main>
 
           <section class="border border-gray-300 rounded-xl shadow-sm bg-blue-100 p-4">
+            <div class="flex flex-row gap-[83rem]">
           <h2 class="text-xl font-bold text-gray-700 mb-4">revenu</h2>
-          <!-- <select name="type" >
+           <select name="type" class=" font-bold text-gray-700  border-gray-300 rounded-xl shadow-sm bg-blue-100 p-4">
             <option value="revenu">revenu</option>
-            <option value="despenses">despenses</option>
-          </select> -->
+
+          </select></div>
 
           <table class="w-full border border-gray-300 rounded-lg overflow-hidden">
             <thead class="bg-gray-100 text-gray-700 border-b border-gray-300">
@@ -108,8 +110,13 @@ $rowIn=$afficahgeExObj->affichageIn($user_id);
         </section>
 
 
-                <section class="border border-gray-300 rounded-xl shadow-sm bg-blue-100 p-4">
+        <section class="border border-gray-300 rounded-xl shadow-sm bg-blue-100 p-4">
+            <div class="flex flex-row gap-[80rem]">
           <h2 class="text-xl font-bold text-gray-700 mb-4">Expenses</h2>
+           <select name="type" class=" font-bold text-gray-700  border-gray-300 rounded-xl shadow-sm bg-blue-100 p-4">
+            <option value="Expenses">Expenses</option>
+
+          </select></div>
 
           <table class="w-full border border-gray-300 rounded-lg overflow-hidden">
             <thead class="bg-gray-100 text-gray-700 border-b border-gray-300">
@@ -147,6 +154,37 @@ $rowIn=$afficahgeExObj->affichageIn($user_id);
             </tbody>
           </table>
         </section>
+
+    <div class=" bg-white p-6 rounded-xl shadow ">
+
+    <h2 class="text-xl font-bold text-center">Incomes vs Expenses</h2>
+<?php $incomePercent=$solde > 0 ? ($montantTotalIn / $solde) * 100 : 0; ?>
+    <!-- Incomes -->
+    <div>
+        <div class="flex justify-between text-sm mb-1">
+            <span class="font-semibold text-green-600">Incomes</span>
+            <span> <?php echo $montantTotalIn ?>  DH</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded h-4">
+            <div class="bg-green-500 h-4 rounded"
+                 style="width: <?php echo $incomePercent ?>%"></div>
+        </div>
+    </div>
+<?php $expensePercent=$solde > 0 ? ($montantTotalEx / $solde) * 100 : 0; ?>
+    <!-- Expenses -->
+    <div>
+        <div class="flex justify-between text-sm mb-1">
+            <span class="font-semibold text-red-600">Expenses</span>
+            <span> <?php echo $montantTotalEx ?> DH</span>
+        </div>
+        <div class="w-full bg-gray-200 rounded h-4">
+            <div class="bg-red-500 h-4 rounded"
+                 style="width: <?php echo $expensePercent ?>%"></div>
+        </div>
+    </div>
+
+</div>
+
 
        
 
