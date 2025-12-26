@@ -141,3 +141,56 @@ class expenses{
             return $stmt->fetch(PDO::FETCH_ASSOC);
         }
 }
+
+
+    class Incomes{
+        private $pdo;
+        private $id;
+        private $MontantIn;
+        private $descreptionIn;
+        private $dateIn;
+        private $categories_id;
+        private $user_id;
+
+        public function __construct($pdo){
+           $this->pdo=$pdo;
+        }
+
+        public function createIn($MontantIn,$descreptionIn,$dateIn,$categories_id,$user_id){
+            $stmt=$this->pdo->prepare('INSERT INTO incomes(montantIn,descriptionIn,dateIn,category_id,user_id)VALUES(?,?,?,?,?)');
+            $stmt->execute([$MontantIn,$descreptionIn,$dateIn,$categories_id,$user_id]);
+        
+        }
+            public function deletIn($id){
+            $stmt=$this->pdo->prepare('DELETE FROM incomes WHERE id=?');
+            $stmt->execute([$id]);
+            header('Location: dashbord.php');
+            exit;
+        
+        }
+        
+        public function updateIn($MontantIn,$descreptionIn,$dateIn,$id){
+            $stmt=$this->pdo->prepare('UPDATE incomes SET montantIn = ?,  descriptionIn = ?,  dateIn = ? WHERE id = ?');
+            $stmt->execute([$MontantIn,$descreptionIn,$dateIn,$id]);
+        
+        }
+        public function  getTotalIncomes($user_id){
+        $stmt = $this->pdo->prepare("SELECT SUM(montantIn) as total FROM incomes WHERE user_id=?");
+        $stmt->execute([$user_id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total']?? 0;
+        }
+        public function affichageIn($user_id){
+            $stmt=$this->pdo->prepare("SELECT * FROM incomes  WHERE user_id=?");
+            $stmt->execute([$user_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+        public function affichageInMd($id){
+            $stmt=$this->pdo->prepare("SELECT * FROM incomes  WHERE id=?");
+            $stmt->execute([$id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        }
+
+}
+?>
+ 
